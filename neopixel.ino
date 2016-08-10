@@ -19,7 +19,7 @@
 // example for more information on possible values.
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-int delayMs = 100;
+int delayMs = 10;
 
 void myPrintf(char *fmt, ... ){
   char buf[128]; // resulting string limited to 128 chars
@@ -52,14 +52,15 @@ void loop() {
   int colours[3] = { 0 };
   int tableSize = ARRAY_SIZE(sinTable);
   int indexes[3] = {0, tableSize / 3, (tableSize / 3) * 2};
-  
+
   for(int i=0;; i++){
 
     for (int c = 0; c < 3; c++) {
-      colours[c] = sinTable[indexes[c]] / 2;
-      indexes[c] = (indexes[c] + 1) / tableSize;
-      Serial.println(colours[c]);
+      colours[c] = sinTable[indexes[c]] / 8;
+      //myPrintf("sinTable[%d] = %d so %d\n", indexes[c], sinTable[indexes[c]], colours[c]);
+      indexes[c] = (indexes[c] + 1) % tableSize;
     }
+
     Serial.println();
     
     pixels.setPixelColor(0, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
