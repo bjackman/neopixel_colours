@@ -63,11 +63,11 @@ void fadeColours() {
     }
 
     Serial.println();
-    
+
     for (int p = 0; p < NUM_PIXELS; p++) {
       pixels.setPixelColor(p, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
     }
-        
+
     pixels.show(); // This sends the updated pixel color to the hardware.
 
     delay(delayMs); // Delay for a period of time (in milliseconds).
