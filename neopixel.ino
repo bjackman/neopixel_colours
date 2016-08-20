@@ -48,7 +48,7 @@ int sinTable[] = {
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-void loop() {
+void fadeColours() {
   int colours[3] = { 0 };
   int tableSize = ARRAY_SIZE(sinTable);
   int indexes[3] = {0, tableSize / 3, (tableSize / 3) * 2};
@@ -64,7 +64,7 @@ void loop() {
     Serial.println();
     
     for (int p = 0; p < NUM_PIXELS; p++) {
-      pixels.setPixelColor(i, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
+      pixels.setPixelColor(p, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
     }
         
     pixels.show(); // This sends the updated pixel color to the hardware.
