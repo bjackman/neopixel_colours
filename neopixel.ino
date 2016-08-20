@@ -63,7 +63,9 @@ void loop() {
 
     Serial.println();
     
-    pixels.setPixelColor(0, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
+    for (int p = 0; p < NUM_PIXELS; p++) {
+      pixels.setPixelColor(i, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
+    }
         
     pixels.show(); // This sends the updated pixel color to the hardware.
 
