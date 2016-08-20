@@ -49,7 +49,7 @@ int sinTable[] = {
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-void fadeColours() {
+void loop() {
   int colours[3] = { 0 };
   int tableSize = ARRAY_SIZE(sinTable);
   int indexes[3] = {0, tableSize / 3, (tableSize / 3) * 2};
