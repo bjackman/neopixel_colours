@@ -49,28 +49,65 @@ int sinTable[] = {
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-void loop() {
-  int colours[3] = { 0 };
-  int tableSize = ARRAY_SIZE(sinTable);
-  int indexes[3] = {0, tableSize / 3, (tableSize / 3) * 2};
+#define TABLE_SIZE ARRAY_SIZE(sinTable)
+#define TABLE_THIRD (TABLE_SIZE / 3)
 
-  for(int i=0;; i++){
+#define BRIGHTNESS_DIVIDER 16
+#define INDEX_TO_COLOURVAL(i, thirds) \
+  (sinTable[(index + TABLE_THIRD * thirds) % TABLE_SIZE] / BRIGHTNESS_DIVIDER)
 
-    for (int c = 0; c < 3; c++) {
-      colours[c] = sinTable[indexes[c]] / 8;
-      //myPrintf("sinTable[%d] = %d so %d\n", indexes[c], sinTable[indexes[c]], colours[c]);
-      indexes[c] = (indexes[c] + 1) % tableSize;
-    }
+uint32_t rgbCircle(int index) {
+  return pixels.Color(INDEX_TO_COLOURVAL(index, 0),
+                      INDEX_TO_COLOURVAL(index, 1),
+                      INDEX_TO_COLOURVAL(index, 2));
+}
 
-    Serial.println();
+void fadeColours() {
+  int indices[NUM_PIXELS];
+
+  for (int i = 0; i < NUM_PIXELS; i++)
+    indices[i] = i * 13;
+
+  for(;;){
 
     for (int p = 0; p < NUM_PIXELS; p++) {
-      pixels.setPixelColor(p, pixels.Color(colours[0], colours[1], colours[2])); // Moderately bright green color.
+      uint32_t colour = rgbCircle(indices[p]++);
+      myPrintf("%08x\r\n", colour);
+      pixels.setPixelColor(p, colour);
     }
 
-    pixels.show(); // This sends the updated pixel color to the hardware.
+    myPrintf("\r\n");
 
-    delay(delayMs); // Delay for a period of time (in milliseconds).
+    pixels.show();
+
+    delay(delayMs);
 
   }
+}
+
+void loop() {
+  fadeColours();
+}
+
+void flashRgb() {
+  Serial.println("switching on");
+
+  pixels.setPixelColor(0, pixels.Color(255, 0, 0));
+  pixels.setPixelColor(1, pixels.Color(0, 255, 0));
+  pixels.setPixelColor(2, pixels.Color(0, 0, 255));
+
+  pixels.show();
+
+  delay(300);
+
+  Serial.println("switching off");
+
+  pixels.setPixelColor(0, pixels.Color(0, 0, 0));
+  pixels.setPixelColor(1, pixels.Color(0, 0, 0));
+  pixels.setPixelColor(2, pixels.Color(0, 0, 0));
+
+  pixels.show();
+
+  delay(300);
+
 }
