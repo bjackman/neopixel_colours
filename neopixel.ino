@@ -18,6 +18,7 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, PIN, NEO_GRB + NEO_KHZ8
 
 int delayMs = 10;
 
+#ifdef MY_PRINTF_ENABLED
 void myPrintf(char *fmt, ... ){
   char buf[128]; // resulting string limited to 128 chars
   va_list args;
@@ -26,6 +27,9 @@ void myPrintf(char *fmt, ... ){
   va_end (args);
   Serial.print(buf);
 }
+#else
+#define myPrintf(...)
+#endif
 
 void setup() {
   Serial.begin(9600);
