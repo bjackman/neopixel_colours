@@ -9,7 +9,7 @@
 #define PIN            1
 
 // How many NeoPixels are attached to the Arduino?
-#define NUM_PIXELS      3
+#define NUM_PIXELS      6
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
