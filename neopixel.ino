@@ -149,14 +149,21 @@ uint32_t randomColour() {
 		      random(0, MAX_BRIGHTNESS));
 }
 
-void randomColours(unsigned int time) {
+uint32_t randomOrOff() {
+  if (random(100) > 40)
+    return randomColour();
+  else
+    return off;
+}
+
+void doRand(unsigned int time, uint32_t (*randFunc)(void)) {
   int delayMs = 90;
 
   time = ROUND_DOWN(time, delayMs);
 
   while (time -= delayMs) {
     for (unsigned int i = 0; i < NUM_PIXELS; i++)
-      pixels.setPixelColor(i, randomColour());
+      pixels.setPixelColor(i, randFunc());
 
     pixels.show();
 
@@ -164,9 +171,19 @@ void randomColours(unsigned int time) {
   }
 }
 
+void randomColours(unsigned int time) {
+  doRand(time, randomColour);
+}
+
+void bleepBloop(unsigned int time) {
+  doRand(time, randomOrOff);
+}
+
 typedef void (*pixel_func_t)(unsigned int time);
 
-pixel_func_t funcs[] = {randomColours, pingPong, fadeColours, flashRgb};
+pixel_func_t funcs[] = {
+  bleepBloop, randomColours, pingPong, fadeColours, flashRgb,
+};
 
 void loop() {
   for (unsigned int i = 0; i < ARRAY_SIZE(funcs); i++) {
