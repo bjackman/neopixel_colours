@@ -15,4 +15,5 @@ Ubuntu 16.04 machine) that makes that work.
 
 [1] You need an up-to-date version of the IDE. Download it off the website,
     don't use a package.
+
 [2] Same for this, clone it from the repo, don't use a package.
