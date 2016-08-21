@@ -62,6 +62,8 @@ uint32_t rgbCircle(int index) {
                       INDEX_TO_COLOURVAL(index, 2));
 }
 
+// Circle the pixels through the edge of RGB colour space (I think?). Each pixel
+// is at a slight offset from its neighbour.
 void fadeColours(unsigned int time) {
   int indices[NUM_PIXELS];
   int delayMs = 10;
@@ -117,6 +119,7 @@ void flashRgb(unsigned int time) {
 }
 
 
+// Zip back and forth along the pixels, circulating colour as we go
 void pingPong(unsigned int time) {
   int pixel = 0, prevPixel = 0;
   int nextOffset = 1;
@@ -171,10 +174,12 @@ void doRand(unsigned int time, uint32_t (*randFunc)(void)) {
   }
 }
 
+// Make each pixel a random colour
 void randomColours(unsigned int time) {
   doRand(time, randomColour);
 }
 
+// Make each pixel a random colour, sometimes off
 void bleepBloop(unsigned int time) {
   doRand(time, randomOrOff);
 }
