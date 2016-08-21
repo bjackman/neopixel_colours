@@ -1,4 +1,8 @@
 #!/bin/python
+
+# This generates a C array definition with a sinusoid ranging between 0 and 255.
+# Then you can copy that into your code.
+
 from math import sin, pi
 
 NUM_INCREMENTS = 100
