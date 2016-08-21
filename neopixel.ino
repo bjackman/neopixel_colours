@@ -8,6 +8,7 @@
 #define PIN            1
 
 #define NUM_PIXELS      6
+#define LAST_PIXEL (NUM_PIXELS - 1)
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
@@ -116,8 +117,33 @@ void flashRgb(unsigned int time) {
 }
 
 
+void pingPing(unsigned int time) {
+  int pixel = 0, prevPixel = 0;
+  int nextOffset = 1;
+  int delayMs = 50;
+  uint32_t colour = red;
+
+  time = ROUND_DOWN(time, delayMs);
+
+  while ((time -= delayMs)) {
+    pixels.setPixelColor(prevPixel, off);
+    pixels.setPixelColor(pixel, colour);
+    pixels.show();
+
+    prevPixel = pixel;
+    pixel += nextOffset;
+
+    if ((pixel == LAST_PIXEL) || (pixel == 0))
+      nextOffset *= -1;
+
+    delay(delayMs);
+  }
+}
+
 void loop() {
-  fadeColours(10000);
-  while (true)
-    flashRgb();
+  while (true) {
+    fadeColours(1000);
+    flashRgb(1000);
+    pingPing(1000);
+  }
 }
