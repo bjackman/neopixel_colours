@@ -143,10 +143,13 @@ void pingPing(unsigned int time) {
   }
 }
 
+typedef void (*pixel_func_t)(unsigned int time);
+
+pixel_func_t funcs[] = {pingPing, fadeColours, flashRgb};
+
 void loop() {
-  while (true) {
-    fadeColours(1000);
-    flashRgb(1000);
-    pingPing(1000);
+  for (unsigned int i = 0; i < ARRAY_SIZE(funcs); i++) {
+    pixel_func_t func = funcs[i % ARRAY_SIZE(funcs)];
+    func(5000);
   }
 }
