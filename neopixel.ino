@@ -45,12 +45,15 @@ int sinTable[] = {
   80, 88, 95, 103, 111, 119
 };
 
+#define ROUND_DOWN(val, multiplier) (val - (val % multiplier))
+
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #define TABLE_SIZE ARRAY_SIZE(sinTable)
 #define TABLE_THIRD (TABLE_SIZE / 3)
 
 #define BRIGHTNESS_DIVIDER 8
+#define MAX_BRIGHTNESS (256 / BRIGHTNESS_DIVIDER)
 #define INDEX_TO_COLOURVAL(i, thirds) \
   (sinTable[(index + TABLE_THIRD * thirds) % TABLE_SIZE] / BRIGHTNESS_DIVIDER)
 
@@ -64,7 +67,7 @@ void fadeColours(unsigned int time) {
   int indices[NUM_PIXELS];
   int delayMs = 10;
 
-  time = time - (time % delayMs);
+  time = ROUND_DOWN(time, delayMs);
 
   for (int i = 0; i < NUM_PIXELS; i++)
     indices[i] = i * 7;
@@ -86,27 +89,32 @@ void fadeColours(unsigned int time) {
   }
 }
 
-void flashRgb() {
-  Serial.println("switching on");
+uint32_t red   = pixels.Color(MAX_BRIGHTNESS, 0, 0);
+uint32_t green = pixels.Color(0, MAX_BRIGHTNESS, 0);
+uint32_t blue  = pixels.Color(0, 0, MAX_BRIGHTNESS);
+uint32_t off   = pixels.Color(0, 0, 0);
 
-  pixels.setPixelColor(0, pixels.Color(255, 0, 0));
-  pixels.setPixelColor(1, pixels.Color(0, 255, 0));
-  pixels.setPixelColor(2, pixels.Color(0, 0, 255));
+void flashRgb(unsigned int time) {
+  uint32_t colours[] = {red, green, blue};
+  int delayMs = 300;
 
-  pixels.show();
+  time = ROUND_DOWN(time, delayMs);
 
-  delay(300);
+  while ((time -= delayMs)) {
+    myPrintf("switching on");
+    for (int i = 0; i < NUM_PIXELS; i++)
+      pixels.setPixelColor(i, colours[i % ARRAY_SIZE(colours)]);
 
-  Serial.println("switching off");
+    pixels.show();
+    delay(300);
 
-  pixels.setPixelColor(0, pixels.Color(0, 0, 0));
-  pixels.setPixelColor(1, pixels.Color(0, 0, 0));
-  pixels.setPixelColor(2, pixels.Color(0, 0, 0));
+    myPrintf("switching off");
+    for (int i = 0; i < NUM_PIXELS; i++)
+      pixels.setPixelColor(i, off);
 
-  pixels.show();
-
-  delay(300);
-
+    pixels.show();
+    delay(300);
+  }
 }
 
 
