@@ -66,7 +66,7 @@ void fadeColours() {
   int indices[NUM_PIXELS];
 
   for (int i = 0; i < NUM_PIXELS; i++)
-    indices[i] = i * 13;
+    indices[i] = i * 7;
 
   for(;;){
 
