@@ -121,14 +121,17 @@ void pingPing(unsigned int time) {
   int pixel = 0, prevPixel = 0;
   int nextOffset = 1;
   int delayMs = 50;
-  uint32_t colour = red;
+  int colourIndex = 0;
 
   time = ROUND_DOWN(time, delayMs);
 
   while ((time -= delayMs)) {
     pixels.setPixelColor(prevPixel, off);
-    pixels.setPixelColor(pixel, colour);
+    pixels.setPixelColor(pixel, rgbCircle(colourIndex));
+
     pixels.show();
+
+    colourIndex += 1;
 
     prevPixel = pixel;
     pixel += nextOffset;
