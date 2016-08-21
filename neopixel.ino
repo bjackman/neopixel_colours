@@ -16,8 +16,6 @@
 // example for more information on possible values.
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-int delayMs = 10;
-
 #ifdef MY_PRINTF_ENABLED
 void myPrintf(char *fmt, ... ){
   char buf[128]; // resulting string limited to 128 chars
@@ -62,13 +60,16 @@ uint32_t rgbCircle(int index) {
                       INDEX_TO_COLOURVAL(index, 2));
 }
 
-void fadeColours() {
+void fadeColours(unsigned int time) {
   int indices[NUM_PIXELS];
+  int delayMs = 10;
+
+  time = time - (time % delayMs);
 
   for (int i = 0; i < NUM_PIXELS; i++)
     indices[i] = i * 7;
 
-  for(;;){
+  while ((time -= delayMs)) {
 
     for (int p = 0; p < NUM_PIXELS; p++) {
       uint32_t colour = rgbCircle(indices[p]++);
@@ -83,10 +84,6 @@ void fadeColours() {
     delay(delayMs);
 
   }
-}
-
-void loop() {
-  fadeColours();
 }
 
 void flashRgb() {
@@ -110,4 +107,11 @@ void flashRgb() {
 
   delay(300);
 
+}
+
+
+void loop() {
+  fadeColours(10000);
+  while (true)
+    flashRgb();
 }
