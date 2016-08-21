@@ -52,7 +52,7 @@ int sinTable[] = {
 #define TABLE_SIZE ARRAY_SIZE(sinTable)
 #define TABLE_THIRD (TABLE_SIZE / 3)
 
-#define BRIGHTNESS_DIVIDER 16
+#define BRIGHTNESS_DIVIDER 8
 #define INDEX_TO_COLOURVAL(i, thirds) \
   (sinTable[(index + TABLE_THIRD * thirds) % TABLE_SIZE] / BRIGHTNESS_DIVIDER)
 
