@@ -143,9 +143,30 @@ void pingPong(unsigned int time) {
   }
 }
 
+uint32_t randomColour() {
+  return pixels.Color(random(0, MAX_BRIGHTNESS),
+		      random(0, MAX_BRIGHTNESS),
+		      random(0, MAX_BRIGHTNESS));
+}
+
+void randomColours(unsigned int time) {
+  int delayMs = 90;
+
+  time = ROUND_DOWN(time, delayMs);
+
+  while (time -= delayMs) {
+    for (unsigned int i = 0; i < NUM_PIXELS; i++)
+      pixels.setPixelColor(i, randomColour());
+
+    pixels.show();
+
+    delay(delayMs);
+  }
+}
+
 typedef void (*pixel_func_t)(unsigned int time);
 
-pixel_func_t funcs[] = {pingPong, fadeColours, flashRgb};
+pixel_func_t funcs[] = {randomColours, pingPong, fadeColours, flashRgb};
 
 void loop() {
   for (unsigned int i = 0; i < ARRAY_SIZE(funcs); i++) {
