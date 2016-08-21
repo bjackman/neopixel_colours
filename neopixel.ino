@@ -182,7 +182,8 @@ void bleepBloop(unsigned int time) {
 typedef void (*pixel_func_t)(unsigned int time);
 
 pixel_func_t funcs[] = {
-  bleepBloop, randomColours, pingPong, fadeColours, flashRgb,
+  bleepBloop, randomColours, pingPong, fadeColours,
+  // flashRgb, This one is shitty
 };
 
 void loop() {
