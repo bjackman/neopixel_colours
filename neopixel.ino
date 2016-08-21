@@ -117,7 +117,7 @@ void flashRgb(unsigned int time) {
 }
 
 
-void pingPing(unsigned int time) {
+void pingPong(unsigned int time) {
   int pixel = 0, prevPixel = 0;
   int nextOffset = 1;
   int delayMs = 50;
@@ -145,7 +145,7 @@ void pingPing(unsigned int time) {
 
 typedef void (*pixel_func_t)(unsigned int time);
 
-pixel_func_t funcs[] = {pingPing, fadeColours, flashRgb};
+pixel_func_t funcs[] = {pingPong, fadeColours, flashRgb};
 
 void loop() {
   for (unsigned int i = 0; i < ARRAY_SIZE(funcs); i++) {
