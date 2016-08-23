@@ -49,7 +49,7 @@ int sinTable[] = {
 #define TABLE_THIRD (TABLE_SIZE / 3)
 
 #define BRIGHTNESS_DIVIDER 8
-#define MAX_BRIGHTNESS (256 / BRIGHTNESS_DIVIDER)
+#define MAX_BRIGHTNESS (255 / BRIGHTNESS_DIVIDER)
 #define INDEX_TO_COLOURVAL(i, thirds) \
   (sinTable[(index + TABLE_THIRD * thirds) % TABLE_SIZE] / BRIGHTNESS_DIVIDER)
 
