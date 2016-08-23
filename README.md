@@ -13,6 +13,12 @@ libraries and stuff via the official Arduino IDE's "board manager" [1], then set
 up the Makefile to use those. env.mk has the system-specific stuff (for my
 Ubuntu 16.04 machine) that makes that work.
 
+Get the Neopixel library with [these instructions](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library-installation),
+and the Flora board support stuff with [these ones](https://learn.adafruit.com/adafruit-arduino-ide-setup/arduino-1-dot-6-x-ide). I used 
+- Arduino IDE 1.6.10
+- NeoPixel library 1.0.6
+- [Arduino Makefile 1.5.1-9-g0ec1489](https://github.com/sudar/Arduino-Makefile/tree/0ec1489414f0bd7fbc9569d334984ef737c9f2a9)
+
 [1] You need an up-to-date version of the IDE. Download it off the website,
     don't use a package.
 
