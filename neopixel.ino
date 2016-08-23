@@ -53,6 +53,12 @@ int sinTable[] = {
 #define INDEX_TO_COLOURVAL(i, thirds) \
   (sinTable[(index + TABLE_THIRD * thirds) % TABLE_SIZE] / BRIGHTNESS_DIVIDER)
 
+void setAllToColour(uint32_t colour) {
+    for (unsigned int i = 0; i < NUM_PIXELS; i++)
+      pixels.setPixelColor(i, colour);
+}
+
+
 uint32_t rgbCircle(int index) {
   return pixels.Color(INDEX_TO_COLOURVAL(index, 0),
                       INDEX_TO_COLOURVAL(index, 1),
@@ -108,8 +114,7 @@ void flashRgb(unsigned int time) {
     delay(300);
 
     myPrintf("switching off");
-    for (int i = 0; i < NUM_PIXELS; i++)
-      pixels.setPixelColor(i, off);
+    setAllToColour(off);
 
     pixels.show();
     delay(300);
@@ -192,16 +197,12 @@ void doFlashing(unsigned int time, uint32_t *colours, unsigned int numColours) {
   while (time -= delayMs) {
     uint32_t colour = colours[colourIndex];
 
-    for (unsigned int i = 0; i < NUM_PIXELS; i++) {
-      pixels.setPixelColor(i, colour);
-    }
+    setAllToColour(colour);
 
     pixels.show();
     delay(delayMs);
 
-    for (unsigned int i = 0; i < NUM_PIXELS; i++) {
-      pixels.setPixelColor(i, off);
-    }
+    setAllToColour(off);
 
     pixels.show();
     colourIndex = (colourIndex + 1) % numColours;;
