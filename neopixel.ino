@@ -4,15 +4,11 @@
   #include <avr/power.h>
 #endif
 
-// Which pin on the Arduino is connected to the NeoPixels?
 #define PIN            1
 
 #define NUM_PIXELS      6
 #define LAST_PIXEL (NUM_PIXELS - 1)
 
-// When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
-// Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
-// example for more information on possible values.
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 #ifdef MY_PRINTF_ENABLED
@@ -30,7 +26,7 @@ void myPrintf(char *fmt, ... ){
 
 void setup() {
   Serial.begin(9600);
-  pixels.begin(); // This initializes the NeoPixel library.
+  pixels.begin();
 }
 
 int sinTable[] = {
