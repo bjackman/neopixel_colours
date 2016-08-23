@@ -45,6 +45,8 @@ int sinTable[] = {
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
+#define MIN(a, b) (a < b ? a : b)
+
 #define TABLE_SIZE ARRAY_SIZE(sinTable)
 #define TABLE_THIRD (TABLE_SIZE / 3)
 
@@ -225,10 +227,63 @@ void flashCircle(unsigned int time) {
   doFlashing(time, colours, ARRAY_SIZE(colours));
 }
 
+// Multiply each component of a colour value by (5/7)
+#define DIM(x) ((x * 5) / 7)
+uint32_t dimColour(uint32_t colour) {
+  uint8_t r, g, b;
+  r = (colour >> 16);
+  g = (colour >>  8);
+  b = (colour >>  0);
+
+  return  pixels.Color(DIM(r), DIM(g), DIM(b));
+}
+
+void setColours(uint32_t *colours) {
+  for (unsigned int i = 0; i < NUM_PIXELS; i++) {
+    pixels.setPixelColor(i, colours[i]);
+  }
+}
+
+// pew pew
+// pew
+void pewPew(unsigned int time) {
+  int delayMs = 40;
+
+  int innerLoopTime = delayMs * (NUM_PIXELS + 4);
+
+  time = ROUND_DOWN(time, innerLoopTime);
+
+  while (time -= innerLoopTime) {
+    uint32_t colours[NUM_PIXELS];
+    uint32_t headColour = randomColour();
+
+    for (unsigned int i = 0; i < ARRAY_SIZE(colours); i++)
+      colours[i] = off;
+
+    setColours(colours);
+
+    for (unsigned int head = 0; head < NUM_PIXELS + 4; head++) {
+      if (head < NUM_PIXELS)
+	colours[head] = headColour;
+
+      for (unsigned int tailPart = 0;
+	   tailPart < MIN(head, NUM_PIXELS);
+	   tailPart++) {
+	colours[tailPart] = dimColour(colours[tailPart]);
+      }
+
+      setColours(colours);
+      pixels.show();
+      delay(delayMs);
+    }
+  }
+}
+
 typedef void (*pixel_func_t)(unsigned int time);
 
 pixel_func_t funcs[] = {
-  flashCircle, THIS_AINT_NO_MACRO, bleepBloop, randomColours, pingPong, fadeColours,
+  pewPew, flashCircle, THIS_AINT_NO_MACRO, bleepBloop, randomColours, pingPong,
+  fadeColours,
   // flashRgb, This one is shitty
 };
 
