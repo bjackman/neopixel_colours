@@ -3,7 +3,7 @@ This repo probably isn't useful to anyone, I'm just writing this for future me.
 I sewed some [Adafruit
 Neopixels](https://learn.adafruit.com/adafruit-neopixel-uberguide/overview) onto
 the collar of a boiler suit to wear at
-[Shambala](http://shambalafestival.co.uk/) this is the code that makes them
+[Shambala](http://www.shambalafestival.org/), this is the code that makes them
 flash and stuff. I built it with the [Arduino
 Makefile](https://github.com/sudar/Arduino-Makefile) [2], you need the latest
 version.
