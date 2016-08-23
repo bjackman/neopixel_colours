@@ -182,15 +182,12 @@ void bleepBloop(unsigned int time) {
   doRand(time, randomOrOff);
 }
 
-// This function is named in caps because it's very intense and cares nothing
-// for your coding style
-void THIS_AINT_NO_MACRO(unsigned int time) {
-  uint32_t colours[] = {off, white};
+void doFlashing(unsigned int time, uint32_t *colours, unsigned int numColours) {
   int colourIndex = 1;
   int delayMs = 40; // yeah we flashin
                     // would like to go faster but it just starts to be PWM
 
-  time = ROUND_DOWN(time, delayMs);
+  time = ROUND_DOWN(time / 2, delayMs);
 
   while (time -= delayMs) {
     uint32_t colour = colours[colourIndex];
@@ -200,15 +197,37 @@ void THIS_AINT_NO_MACRO(unsigned int time) {
     }
 
     pixels.show();
-    colourIndex = (colourIndex + 1) % ARRAY_SIZE(colours);
+    delay(delayMs);
+
+    for (unsigned int i = 0; i < NUM_PIXELS; i++) {
+      pixels.setPixelColor(i, off);
+    }
+
+    pixels.show();
+    colourIndex = (colourIndex + 1) % numColours;;
     delay(delayMs);
   }
+}
+
+// This function is named in caps because it's very intense and cares nothing
+// for your coding style
+void THIS_AINT_NO_MACRO(unsigned int time) {
+  doFlashing(time, &white, 1);
+}
+
+void flashCircle(unsigned int time) {
+  uint32_t colours[30];
+
+  for (unsigned int i = 0; i < ARRAY_SIZE(colours); i++)
+    colours[i] = rgbCircle(i * 10);
+
+  doFlashing(time, colours, ARRAY_SIZE(colours));
 }
 
 typedef void (*pixel_func_t)(unsigned int time);
 
 pixel_func_t funcs[] = {
-  THIS_AINT_NO_MACRO, bleepBloop, randomColours, pingPong, fadeColours,
+  flashCircle, THIS_AINT_NO_MACRO, bleepBloop, randomColours, pingPong, fadeColours,
   // flashRgb, This one is shitty
 };
 
