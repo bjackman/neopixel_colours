@@ -294,8 +294,8 @@ pixel_func_t funcs[] = {
 };
 
 void loop() {
-  for (unsigned int i = 0; i < ARRAY_SIZE(funcs); i++) {
-    pixel_func_t func = funcs[i % ARRAY_SIZE(funcs)];
-    func(5000);
+  for (;;) {
+    pixel_func_t func = funcs[random(ARRAY_SIZE(funcs))];
+    func(random(10000, 30000));
   }
 }
