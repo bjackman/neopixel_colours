@@ -62,7 +62,7 @@ void setAllToColour(uint32_t colour) {
 
 
 uint32_t rgbCircle(int index) {
-  return pixels.Color(INDEX_TO_COLOURVAL(index, 0),
+  return pixels.Color(MIN((INDEX_TO_COLOURVAL(index, 0) * 2), 255),
                       INDEX_TO_COLOURVAL(index, 1),
                       INDEX_TO_COLOURVAL(index, 2));
 }
