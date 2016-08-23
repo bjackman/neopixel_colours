@@ -156,7 +156,7 @@ uint32_t randomColour() {
   static int rgbIndex;
   uint8_t r = 0, g = 0, b = 0;
 
-  if (random(100) > 90)
+  if (random(100) > 80)
     return rgb[rgbIndex++];
 
   do {
