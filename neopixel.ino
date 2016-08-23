@@ -154,13 +154,18 @@ void pingPong(unsigned int time) {
 uint32_t randomColour() {
   static uint32_t rgb[] = {red, green, blue};
   static int rgbIndex;
+  uint8_t r = 0, g = 0, b = 0;
 
   if (random(100) > 90)
     return rgb[rgbIndex++];
 
-  return pixels.Color(random(0, MAX_BRIGHTNESS),
-		      random(0, MAX_BRIGHTNESS),
-		      random(0, MAX_BRIGHTNESS));
+  do {
+    r = random(0, MAX_BRIGHTNESS);
+    g = random(0, MAX_BRIGHTNESS);
+    b = random(0, MAX_BRIGHTNESS);
+  } while ((r + g + b) < MAX_BRIGHTNESS);
+
+  return pixels.Color(r, g, b);
 }
 
 uint32_t randomOrOff() {
