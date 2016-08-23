@@ -91,6 +91,7 @@ uint32_t red   = pixels.Color(MAX_BRIGHTNESS, 0, 0);
 uint32_t green = pixels.Color(0, MAX_BRIGHTNESS, 0);
 uint32_t blue  = pixels.Color(0, 0, MAX_BRIGHTNESS);
 uint32_t off   = pixels.Color(0, 0, 0);
+uint32_t white = pixels.Color(MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
 
 void flashRgb(unsigned int time) {
   uint32_t colours[] = {red, green, blue};
@@ -181,10 +182,33 @@ void bleepBloop(unsigned int time) {
   doRand(time, randomOrOff);
 }
 
+// This function is named in caps because it's very intense and cares nothing
+// for your coding style
+void THIS_AINT_NO_MACRO(unsigned int time) {
+  uint32_t colours[] = {off, white};
+  int colourIndex = 1;
+  int delayMs = 40; // yeah we flashin
+                    // would like to go faster but it just starts to be PWM
+
+  time = ROUND_DOWN(time, delayMs);
+
+  while (time -= delayMs) {
+    uint32_t colour = colours[colourIndex];
+
+    for (unsigned int i = 0; i < NUM_PIXELS; i++) {
+      pixels.setPixelColor(i, colour);
+    }
+
+    pixels.show();
+    colourIndex = (colourIndex + 1) % ARRAY_SIZE(colours);
+    delay(delayMs);
+  }
+}
+
 typedef void (*pixel_func_t)(unsigned int time);
 
 pixel_func_t funcs[] = {
-  bleepBloop, randomColours, pingPong, fadeColours,
+  THIS_AINT_NO_MACRO, bleepBloop, randomColours, pingPong, fadeColours,
   // flashRgb, This one is shitty
 };
 
